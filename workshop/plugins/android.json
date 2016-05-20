@@ -9,6 +9,12 @@
     "installed_plugins": {
         "cordova-plugin-whitelist": {
             "PACKAGE_NAME": "com.makerjeff.workshop"
+        },
+        "cordova-plugin-device": {
+            "PACKAGE_NAME": "com.makerjeff.workshop"
+        },
+        "cordova-plugin-console": {
+            "PACKAGE_NAME": "com.makerjeff.workshop"
         }
     },
     "dependent_plugins": {}

@@ -49,3 +49,47 @@ var app = {
 };
 
 app.initialize();
+
+
+var button = document.getElementById('clickBox');
+var text = document.getElementById('clickText');
+
+var redState = true;
+
+// button.addEventListener('click', function(event){
+//     if(redState == true){
+//         button.style.background = 'rgba(0,255,0,1.0)';
+//         console.log('turning green');
+//     } else {
+//         button.style.background = 'rgba(255,0,0,1.0)';
+//     }
+//
+//     redState = !redState;
+// });
+
+button.addEventListener('touchstart', function(e){
+    console.log('touch started');
+    button.style.background = 'rgba(0,255,0,1.0)';
+
+    text.innerHTML = 'touching!';
+});
+
+button.addEventListener('touchend', function(e){
+    console.log('touch ended');
+    button.style.background = 'rgba(255,0,0,1.0)';
+
+    text.innerHTML = 'touch ended!';
+});
+
+button.addEventListener('touchcancel', function(e){
+    console.log('touch canceled?');
+    button.style.background = 'rgba(0,0,0,1.0)';
+});
+
+button.addEventListener('touchmove', function(e){
+    console.log('moving!');
+    button.style.background = 'rgba(0,0,255,1.0)';
+
+    text.innerHTML = 'x: ' + e.touches[0].screenX.toFixed(2) + ', y: ' + e.touches[0].screenY.toFixed(2) + '<br>' + 'xPage: ' + e.touches[0].pageX.toFixed(2) + 'yPage: ' + e.touches[0].pageY.toFixed(2);
+});
+
