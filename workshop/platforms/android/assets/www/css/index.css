@@ -126,3 +126,17 @@ h1 {
 
     font-weight: bold;
 }
+
+#infoBox {
+    display: flex;
+    position: relative;
+    width: 100%;
+    height: 80px;
+    background: rgba(100,100,100,1.0);
+
+    justify-content: center;
+    align-items: center;
+
+    font-weight: bold;
+
+}

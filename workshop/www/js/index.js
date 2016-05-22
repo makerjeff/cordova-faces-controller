@@ -51,8 +51,10 @@ var app = {
 app.initialize();
 
 
+//******** DON'T USE IN PRODUCTION! POLLUTES GLOBAL SCOPE! *********
 var button = document.getElementById('clickBox');
 var text = document.getElementById('clickText');
+var info = document.getElementById('infoBox');
 
 var redState = true;
 
@@ -66,6 +68,8 @@ var redState = true;
 //
 //     redState = !redState;
 // });
+
+info.innerHTML = 'page-width: ' + screen.width + '<br> page-height: ' + screen.height;
 
 button.addEventListener('touchstart', function(e){
     console.log('touch started');
@@ -90,6 +94,6 @@ button.addEventListener('touchmove', function(e){
     console.log('moving!');
     button.style.background = 'rgba(0,0,255,1.0)';
 
-    text.innerHTML = 'x: ' + e.touches[0].screenX.toFixed(2) + ', y: ' + e.touches[0].screenY.toFixed(2) + '<br>' + 'xPage: ' + e.touches[0].pageX.toFixed(2) + 'yPage: ' + e.touches[0].pageY.toFixed(2);
+    text.innerHTML = 'screen-X: ' + e.touches[0].screenX.toFixed(2) + ', screen-Y: ' + e.touches[0].screenY.toFixed(2) + '<br>' + 'page-X: ' + e.touches[0].pageX.toFixed(2) + ' page-Y: ' + e.touches[0].pageY.toFixed(2);
 });
 
