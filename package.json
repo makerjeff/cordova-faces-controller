@@ -1,6 +1,6 @@
 {
   "name": "cordova-faces-controller",
-  "version": "0.1,0",
+  "version": "0.1.0",
   "private":"true",
   "description": "cordova faces controller, AKA robot controller.",
   "main": "app.js",

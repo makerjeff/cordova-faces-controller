@@ -7,6 +7,7 @@
 ## Release History
 
 ## Notes
+- All RnD courtesy of 'woneighty-faces'.
 
 **To build:**
 
