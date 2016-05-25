@@ -1,6 +1,8 @@
 /* =============================
- *  PWM Motor Controller v0.1.0
+ *  PWM Motor Controller v0.2.0
  * =============================
+ * 2016.MAY.24: DONE!
+ * 2016.MAY.24: Implementing direction + speed for both wheels.
  * 2016.MAY.24: CONVERTED TO cordova-faces-controller
  */
  
@@ -42,20 +44,18 @@ int inByte = 0;
 
 // MOTOR globals
 // ProMicro PWM: 3, 5, 6, 9, 10
-int motor1EN1 = 3;    //proMicro PWM pin
+int motor1EN = 3;    //proMicro PWM pin
 int motor1DirA = 15;  //proMicro digital pin, may need to be swapped
 int motor1DirB = 14;  //proMicro digital pin, may need to be swapped
 
 //TODO: implement
-int motor2EN1 = 9;    //motorB PWM pin
+int motor2EN = 9;    //motorB PWM pin
 int motor2DirA = 7;   //motorB dirA digital pin
 int motor2DirB = 8;   //motorB dirB digital pin
 
 
 
 void setup() {
-  pinMode(pwmLed, OUTPUT);
-  pinMode(RXLED, OUTPUT);
 
   Serial.begin(9600);
   //Serial.setTimeout(10);  //milliseconds of wait time between bytes.
@@ -63,109 +63,113 @@ void setup() {
   while(!Serial) {
     ; //wait for serial port connection; leonardo + micro
   }
-  
-  analogWrite(pwmLed, 0);
+
+    motorInit();
+
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-
-  //evaluateSerial();
-
-  serialMotorTest();
+  serialMotorController();
 }
 
 
-// custom functions
+// ===== CUSTOM FUNCTIONS =====
 
 /**
- * EVALUATE SERIAL SIGNAL (template)
+ * initialize the motor
+ * TODO: add a feedback system.
  */
-void evaluateSerial() {
-  
-  while(Serial.available() > 0) {
-    int val1 = Serial.parseInt();
+void motorInit(){
+  pinMode(pwmLed, OUTPUT);
+  pinMode(RXLED, OUTPUT);
 
-    if(val1 > 255) {
-      Serial.print("value too high! try again \r\n");
-    }
-
-    else if (Serial.read() == ';') {
-      Serial.print(val1);
-      Serial.print(". \r\n");
-
-      setMotor(1, val1);
-    }
-  }
+  pinMode(motor1EN, OUTPUT);
+  pinMode(motor1DirA, OUTPUT);
+  pinMode(motor1DirB, OUTPUT);
+  pinMode(motor2EN, OUTPUT);
+  pinMode(motor2DirA, OUTPUT);
+  pinMode(motor2DirB, OUTPUT);
+  //set to zeros
+  analogWrite(pwmLed, 0);
+  analogWrite(motor1EN, 0);
+  digitalWrite(motor1DirA, LOW);
+  digitalWrite(motor1DirB, LOW);
+  analogWrite(motor2EN, 0);
+  digitalWrite(motor2DirA, LOW);
+  digitalWrite(motor2DirB, LOW);
 }
-
 
 // TODO: rewrite to allow dual motor control!
 //comprehensive test using singular numbers, single motor, parsing two values.
-void serialMotorTest() {
+void serialMotorController() {
 
   while(Serial.available() > 0) {
-    
-    int tempDir = Serial.parseInt();
-    int val1 = Serial.parseInt();
 
-    if(val1 > 255 || tempDir > 1) {
-      Serial.print("value is too high! try again \r\n");  
+    // [motor1 direction], [motor1 speed], [motor2 direction], [motor2 speed]; 
+    int motor1Dir = Serial.parseInt();
+    int motor1Speed = Serial.parseInt();
+    int motor2Dir = Serial.parseInt();
+    int motor2Speed = Serial.parseInt();
+
+    //ERRORS
+    if(motor1Speed > 255 || motor1Dir > 1 || motor2Speed > 255 || motor2Dir > 1) {
+      Serial.print("A value was too high! try again. \r\n");  
     }
 
     //if end character has been reached...
     else if (Serial.read() == ';'){
-      
-      if(tempDir == 1) {
-        Serial.print("forward");
+
+      // FEEDBACK 
+      if(motor1Dir == 1) {
+        Serial.print("m1f");
       }
-      else if(tempDir == 0) {
-        Serial.print("reverse");
+      else if(motor1Dir == 0) {
+        Serial.print("m1r");
       }
       
+      Serial.print(": ");
+      Serial.print(motor1Speed);
+
       Serial.print(", ");
-      Serial.print(val1);
+
+      if(motor2Dir == 1) {
+        Serial.print("m2f");
+      }
+      else if(motor2Dir == 0) {
+        Serial.print("m2r");
+      }
+      
+      Serial.print(": ");
+      Serial.print(motor2Speed);
+
       Serial.print(". \r\n");
 
-      // affect motor
-      if(tempDir == 1){
+      // FEEDBACK - END
+
+      // affect motor1
+      if(motor1Dir == 1){
       digitalWrite(motor1DirA, HIGH);
       digitalWrite(motor1DirB, LOW);
       }
-      else if(tempDir == 0){
+      else if(motor1Dir == 0){
         digitalWrite(motor1DirA, LOW);
         digitalWrite(motor1DirB, HIGH);
       }
+
+      //affect motor2
+      if(motor2Dir == 1){
+      digitalWrite(motor2DirA, HIGH);
+      digitalWrite(motor2DirB, LOW);
+      }
+      else if(motor2Dir == 0){
+        digitalWrite(motor2DirA, LOW);
+        digitalWrite(motor2DirB, HIGH);
+      }
       
-      analogWrite(motor1EN1, val1);
-      analogWrite(pwmLed, val1);
-      
+      analogWrite(motor1EN, motor1Speed);
+      analogWrite(motor2EN, motor2Speed);
+      analogWrite(pwmLed, motor1Speed);
     }
-  }
-  
+  } 
 }
-
-
-/**
- * setMotor prototype (untested)
- */
-void setMotor(int dir, int speet) {
-  
-  if(dir == 1) {
-    digitalWrite(motor1DirA, HIGH);
-    digitalWrite(motor1DirB, LOW);
-  }
-  else if(dir == 0) {
-    digitalWrite(motor1DirA, LOW);
-    digitalWrite(motor1DirB, HIGH);  
-  }
-  else {
-    digitalWrite(motor1DirA, LOW);
-    digitalWrite(motor1DirB, LOW);
-  }
-
-  analogWrite(pwmLed, speet);
-  
-}
-
 
