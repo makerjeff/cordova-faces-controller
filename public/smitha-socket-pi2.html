@@ -18,8 +18,9 @@
 <div id="status"> smitha-socket is working </div>
 
 <button id="button1"> click send</button>
-<input id="slider1" type="range" name="rangeInput" value="0" min="-255" max="255" step="1">
-<input id="slider2" type="range" name="rangeInput2" value="0" min="-255" max="255" step="1">
+<input id="sliderL" type="range" name="rangeInputL" value="0" min="-255" max="255" step="1">
+<input id="sliderR" type="range" name="rangeInputR" value="0" min="-255" max="255" step="1">
+
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
@@ -27,8 +28,8 @@
 
         var socket = io('192.168.1.110:3000');
         var button1 = document.getElementById('button1');
-        var slider1 = document.getElementById('slider1');
-        var slider2 = document.getElementById('slider2');
+        var sliderR = document.getElementById('sliderR');
+        var sliderL = document.getElementById('sliderL');
 
         socket.on('connect', function(socket){
             console.log('socket connection established!');
@@ -36,8 +37,8 @@
 
         button1.addEventListener('click', function(e){
 
-            slider1.value = 0;
-            slider2.value = 0;
+            sliderR.value = 0;
+            sliderL.value = 0;
             console.log('ALL STOP!');
             socket.emit('message', '0,0,0,0;');
         });
@@ -50,8 +51,8 @@
         slider1.addEventListener('input', function(e){
             console.log(this.value);
 
-            sendValue1 = slider1.value;
-            sendValue2 = slider2.value;
+            sendValue1 = sliderR.value;
+            sendValue2 = sliderL.value;
 
             if (sendValue1 < 0){
                 sendValue1 = Math.abs(sendValue1);
@@ -84,8 +85,8 @@
          */
         function updateMotor(socket, dir1, val1, dir2, val2){
 
-            sendValue1 = slider1.value;
-            sendValue2 = slider2.value;
+            sendValue1 = sliderL.value;
+            sendValue2 = sliderR.value;
 
             if (sendValue1 < 0){
                 sendValue1 = Math.abs(sendValue1);
