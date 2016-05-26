@@ -44,11 +44,31 @@
 
         var motor1Dir = 0;
         var motor2Dir = 0;
-        var sendValue1 = slider1.value;
-        var sendValue2 = slider2.value;
+        var sendValue1;
+        var sendValue2;
 
         slider1.addEventListener('input', function(e){
-            console.log(this.value);
+//            console.log(this.value);
+            //socket.emit('message', motor1Dir + ',' + sendValue1 + ',' + motor2Dir + ',' + sendValue2 + ';');
+            updateMotor(socket, motor1Dir, sendValue1, motor2Dir, sendValue2);
+        });
+
+        slider2.addEventListener('input', function(e){
+            updateMotor(socket, motor1Dir, sendValue1, motor2Dir, sendValue2);
+        });
+
+        /**
+         * update motor position for both motors.
+         * @param socket Socket to pass in.
+         * @param dir1 motor1 direction.
+         * @param val1 motor1 value.
+         * @param dir2 motor2 direction.
+         * @param val2 motor2 value.
+         */
+        function updateMotor(socket, dir1, val1, dir2, val2){
+
+            sendValue1 = slider1.value;
+            sendValue2 = slider2.value;
 
             if (sendValue1 < 0){
                 sendValue1 = Math.abs(sendValue1);
@@ -63,10 +83,12 @@
             } else {
                 motor2Dir = '1';
             }
-            socket.emit('message', motor1Dir + ',' + sendValue1 + ',' + motor2Dir + ',' + sendValue2 + ';');
-        });
+            socket.emit('message', dir1 + ',' + val1 + ',' + dir2 + ',' + val2 + ';');
+        }
 
     });
+
+
 </script>
 </body>
 </html>
