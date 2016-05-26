@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <title>smitha-socket</title>
+
+    <style>
+        body, html {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+<div id="status"> smitha-socket is working </div>
+
+<button id="button1"> click send</button>
+<input id="slider1" type="range" name="rangeInput" value="0" min="-255" max="255" step="1">
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function(e){
+
+        var socket = io('localhost:3000');
+        var button1 = document.getElementById('button1');
+        var slider1 = document.getElementById('slider1');
+
+        socket.on('connect', function(socket){
+            console.log('socket connection established!');
+        });
+
+        button1.addEventListener('click', function(e){
+
+            slider1.value = 0;
+            console.log('ALL STOP!');
+            socket.emit('message', '0,0,0,0;');
+        });
+
+        slider1.addEventListener('input', function(e){
+            console.log(this.value);
+
+            var sendValue = this.value;
+
+            var motorDir = 0;
+
+            if (sendValue < 0){
+                sendValue = Math.abs(sendValue);
+                motorDir = '0';
+            } else {
+                motorDir = '1';
+            }
+            socket.emit('message', motorDir + ',' + sendValue + ',' + motorDir + ',' + sendValue + ';');
+
+
+        });
+
+    });
+</script>
+</body>
+</html>

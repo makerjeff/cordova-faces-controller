@@ -28,30 +28,31 @@
             * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
                 * Enable inline JS: add 'unsafe-inline' to default-src
         -->
-        <!--<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">-->
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
         <meta name="format-detection" content="telephone=no">
         <meta name="msapplication-tap-highlight" content="no">
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
-        <link rel="stylesheet" type="text/css" href="css/controller.css">
+        <link rel="stylesheet" type="text/css" href="css/index.css">
         <title>Commander</title>
     </head>
     <body>
-        <div class="controllerApp">
-            <h1>Controller</h1>
+        <div class="app">
+            <h1>Commander v0.2.0</h1>
+            <div id="deviceready" class="blink">
+                <p class="event listening">Connecting to Robot</p>
+                <p class="event received">Robot is Ready</p>
+            </div>
 
-
+            <div id="clickBox">
+                <p id="clickText">click me</p>
+            </div>
 
             <div id="infoBox"> (info here) </div>
-        </div>
 
-        <div id="clickBox">
-            <p id="clickText">click me</p>
+            <div id="controllerButton"> <a href="controller.html">controller</a></div>
         </div>
-
         <script type="text/javascript" src="cordova.js"></script>
-        <!--<script type="text/javascript" src="js/socket.io.js"></script>-->
-        <script type="text/javascript" src="http://cdn.socket.io/socket.io-1.0.3.js"></script>
-        <script type="text/javascript" src="js/controller.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
 
 
     </body>
