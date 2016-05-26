@@ -31,14 +31,14 @@
         var sliderR = document.getElementById('sliderR');
         var sliderL = document.getElementById('sliderL');
 
+        var motor1Dir = 0;
+        var motor2Dir = 0;
+        var sendValue1;
+        var sendValue2;
+
         Socket.on('connect', function(socket){
             console.log('socket connection established!');
 
-
-            var motor1Dir = 0;
-            var motor2Dir = 0;
-            var sendValue1;
-            var sendValue2;
 
             sliderL.addEventListener('input', function(e){
                 //socket.emit('message', motor1Dir + ',' + sendValue1 + ',' + motor2Dir + ',' + sendValue2 + ';');
