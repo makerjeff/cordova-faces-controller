@@ -11,6 +11,7 @@
         body, html {
             width: 100%;
             height: 100%;
+            -webkit-appearance: slider-vertical;
         }
     </style>
 </head>
@@ -18,8 +19,9 @@
 <div id="status"> smitha-socket is working </div>
 
 <button id="button1"> click send</button> <br>
-<input id="sliderL" type="range" name="rangeInputL" value="0" min="-255" max="255" step="1"><br>
 <input id="sliderR" type="range" name="rangeInputR" value="0" min="-255" max="255" step="1"><br>
+<input id="sliderL" type="range" name="rangeInputL" value="0" min="-255" max="255" step="1"><br>
+
 
 
 <script src="/socket.io/socket.io.js"></script>
