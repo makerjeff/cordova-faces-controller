@@ -48,7 +48,7 @@
         var sendValue1;
         var sendValue2;
 
-        slider1.addEventListener('input', function(e){
+        sliderL.addEventListener('input', function(e){
             console.log(this.value);
 
             sendValue1 = sliderR.value;
@@ -71,7 +71,7 @@
             //updateMotor(socket, motor1Dir, sendValue1, motor2Dir, sendValue2);
         });
 
-        slider2.addEventListener('input', function(e){
+        sliderR.addEventListener('input', function(e){
             updateMotor(socket, motor1Dir, sendValue1, motor2Dir, sendValue2);
         });
 
