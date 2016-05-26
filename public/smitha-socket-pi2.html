@@ -26,12 +26,12 @@
 <script>
     document.addEventListener('DOMContentLoaded', function(e){
 
-        var socket = io('192.168.1.110:3000');
+        var Socket = io('192.168.1.110:3000');
         var button1 = document.getElementById('button1');
         var sliderR = document.getElementById('sliderR');
         var sliderL = document.getElementById('sliderL');
 
-        socket.on('connect', function(socket){
+        Socket.on('connect', function(socket){
             console.log('socket connection established!');
 
 
@@ -42,11 +42,11 @@
 
             sliderL.addEventListener('input', function(e){
                 //socket.emit('message', motor1Dir + ',' + sendValue1 + ',' + motor2Dir + ',' + sendValue2 + ';');
-                updateMotor(socket, motor1Dir, sendValue1, motor2Dir, sendValue2);
+                updateMotor(Socket, motor1Dir, sendValue1, motor2Dir, sendValue2);
             });
 
             sliderR.addEventListener('input', function(e){
-                updateMotor(socket, motor1Dir, sendValue1, motor2Dir, sendValue2);
+                updateMotor(Socket, motor1Dir, sendValue1, motor2Dir, sendValue2);
             });
 
             button1.addEventListener('click', function(e){
@@ -54,7 +54,7 @@
                 sliderR.value = 0;
                 sliderL.value = 0;
                 console.log('ALL STOP!');
-                socket.emit('message', '0,0,0,0;');
+                Socket.emit('message', '0,0,0,0;');
             });
         });
 
