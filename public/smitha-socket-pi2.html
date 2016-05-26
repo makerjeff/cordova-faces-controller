@@ -48,9 +48,26 @@
         var sendValue2;
 
         slider1.addEventListener('input', function(e){
-//            console.log(this.value);
-            //socket.emit('message', motor1Dir + ',' + sendValue1 + ',' + motor2Dir + ',' + sendValue2 + ';');
-            updateMotor(socket, motor1Dir, sendValue1, motor2Dir, sendValue2);
+            console.log(this.value);
+
+            sendValue1 = slider1.value;
+            sendValue2 = slider2.value;
+
+            if (sendValue1 < 0){
+                sendValue1 = Math.abs(sendValue1);
+                motor1Dir = '0';
+            } else {
+                motor1Dir = '1';
+            }
+
+            if (sendValue2 < 0){
+                sendValue2 = Math.abs(sendValue2);
+                motor2Dir = '0';
+            } else {
+                motor2Dir = '1';
+            }
+            socket.emit('message', motor1Dir + ',' + sendValue1 + ',' + motor2Dir + ',' + sendValue2 + ';');
+            //updateMotor(socket, motor1Dir, sendValue1, motor2Dir, sendValue2);
         });
 
         slider2.addEventListener('input', function(e){
