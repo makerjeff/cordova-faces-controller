@@ -18,9 +18,8 @@
 <div id="status"> smitha-socket is working </div>
 
 <button id="button1"> click send</button> <br>
-<input id="sliderR" type="range" name="rangeInputR" value="0" min="-255" max="255" step="1">
-<input id="sliderL" type="range" name="rangeInputL" value="0" min="-255" max="255" step="1">
-
+<input id="sliderR" type="range" name="rangeInputR" value="0" min="-255" max="255" step="1"><br>
+<input id="sliderL" type="range" name="rangeInputL" value="0" min="-255" max="255" step="1"><br>
 
 
 <script src="/socket.io/socket.io.js"></script>
@@ -45,11 +44,11 @@
 
             sliderL.addEventListener('input', function(e){
                 //socket.emit('message', motor1Dir + ',' + sendValue1 + ',' + motor2Dir + ',' + sendValue2 + ';');
-                updateMotor(Socket, motor1Dir, sendValue1, motor2Dir, sendValue2);
+                updateMotor(Socket);
             });
 
             sliderR.addEventListener('input', function(e){
-                updateMotor(Socket, motor1Dir, sendValue1, motor2Dir, sendValue2);
+                updateMotor(Socket);
             });
 
             button1.addEventListener('click', function(e){
@@ -72,7 +71,7 @@
          * @param dir2 motor2 direction.
          * @param val2 motor2 value.
          */
-        function updateMotor(socket, dir1, val1, dir2, val2){
+        function updateMotor(socket){
 
             var sendValue1 = sliderL.value;
             var sendValue2 = sliderR.value;
@@ -90,7 +89,7 @@
             } else {
                 motor2Dir = '1';
             }
-            socket.emit('message', dir1 + ',' + val1 + ',' + dir2 + ',' + val2 + ';');
+            socket.emit('message', motor1Dir + ',' + sendValue1 + ',' + motor2Dir + ',' + sendValue2 + ';');
         }
 
     });
