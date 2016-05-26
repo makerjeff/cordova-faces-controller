@@ -28,8 +28,14 @@ var myPort = new SerialPort(portName, portConfig);
 
 // SERIALPORT BOILERPLATE - END
 
+//localhost controller
 app.get('/', function(req,res){
     res.sendFile(__dirname + '/public/smitha-socket.html');
+});
+
+//for pi2 controller
+app.get('/pi2/', function(req, res){
+    res.sendFile(__dirname + '/public/smitha-socket-pi2.html');
 });
 
 // SOCKET.IO
@@ -38,7 +44,7 @@ io.on('connect', function(socket){
 
     socket.on('message', function(messageData){
         console.log(messageData);
-        
+
 
         myPort.write(messageData, function(error, bytesWritten){
             if(error) {
