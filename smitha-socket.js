@@ -38,6 +38,10 @@ app.get('/pi2/', function(req, res){
     res.sendFile(__dirname + '/public/smitha-socket-pi2.html');
 });
 
+app.get('/pifi/', function(req, res){
+    res.sendFile(__dirname + '/public/smitha-socket-pi2-pifi.html');
+});
+
 // SOCKET.IO
 io.on('connect', function(socket){
     console.log(socket.client.id.toString().blue + ' has connected' );
