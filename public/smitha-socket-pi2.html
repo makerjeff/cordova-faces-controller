@@ -48,15 +48,17 @@
             sliderR.addEventListener('input', function(e){
                 updateMotor(socket, motor1Dir, sendValue1, motor2Dir, sendValue2);
             });
+
+            button1.addEventListener('click', function(e){
+
+                sliderR.value = 0;
+                sliderL.value = 0;
+                console.log('ALL STOP!');
+                socket.emit('message', '0,0,0,0;');
+            });
         });
 
-        button1.addEventListener('click', function(e){
 
-            sliderR.value = 0;
-            sliderL.value = 0;
-            console.log('ALL STOP!');
-            socket.emit('message', '0,0,0,0;');
-        });
 
 
         /**
