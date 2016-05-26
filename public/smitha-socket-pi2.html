@@ -19,6 +19,7 @@
 
 <button id="button1"> click send</button>
 <input id="slider1" type="range" name="rangeInput" value="0" min="-255" max="255" step="1">
+<input id="slider2" type="range" name="rangeInput2" value="0" min="-255" max="255" step="1">
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
@@ -27,6 +28,7 @@
         var socket = io('192.168.1.110:3000');
         var button1 = document.getElementById('button1');
         var slider1 = document.getElementById('slider1');
+        var slider2 = document.getElementById('slider2');
 
         socket.on('connect', function(socket){
             console.log('socket connection established!');
@@ -35,26 +37,33 @@
         button1.addEventListener('click', function(e){
 
             slider1.value = 0;
+            slider2.value = 0;
             console.log('ALL STOP!');
             socket.emit('message', '0,0,0,0;');
         });
 
+        var motor1Dir = 0;
+        var motor2Dir = 0;
+        var sendValue1 = slider1.value;
+        var sendValue2 = slider2.value;
+
         slider1.addEventListener('input', function(e){
             console.log(this.value);
 
-            var sendValue = this.value;
-
-            var motorDir = 0;
-
-            if (sendValue < 0){
-                sendValue = Math.abs(sendValue);
-                motorDir = '0';
+            if (sendValue1 < 0){
+                sendValue1 = Math.abs(sendValue1);
+                motor1Dir = '0';
             } else {
-                motorDir = '1';
+                motor1Dir = '1';
             }
-            socket.emit('message', motorDir + ',' + sendValue + ',' + motorDir + ',' + sendValue + ';');
 
-
+            if (sendValue2 < 0){
+                sendValue2 = Math.abs(sendValue2);
+                motor2Dir = '0';
+            } else {
+                motor2Dir = '1';
+            }
+            socket.emit('message', motor1Dir + ',' + sendValue1 + ',' + motor2Dir + ',' + sendValue2 + ';');
         });
 
     });
