@@ -20,7 +20,7 @@
     -webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */
 }
 
-body {
+html, body {
     -webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
     -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
     -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
@@ -88,52 +88,14 @@ h1 {
     text-align:center;
 }
 
-.event {
-    border-radius:4px;
-    -webkit-border-radius:4px;
-    color:#FFFFFF;
-    font-size:12px;
-    margin:0px 30px;
-    padding:2px 0px;
-}
-
-.event.listening {
-    background-color:#333333;
-    display:block;
-}
-
-.event.received {
-    background-color:#4B946A;
-    display:none;
-}
-
-@keyframes fade {
-    from { opacity: 1.0; }
-    50% { opacity: 0.4; }
-    to { opacity: 1.0; }
-}
- 
-@-webkit-keyframes fade {
-    from { opacity: 1.0; }
-    50% { opacity: 0.4; }
-    to { opacity: 1.0; }
-}
- 
-.blink {
-    animation:fade 3000ms infinite;
-    -webkit-animation:fade 3000ms infinite;
-}
-
 #clickBox {
     display: flex;
     position: relative;
     width: 100%;
-    height: 80px;
-    background: rgba(255,0,0,1.0);
-
+    height: 100%;
+    background: rgba(255,190,190,1.0);
     justify-content: center;
     align-items: center;
-
     font-weight: bold;
 }
 
@@ -143,21 +105,7 @@ h1 {
     width: 100%;
     height: 80px;
     background: rgba(100,100,100,1.0);
-
     justify-content: center;
     align-items: center;
-
     font-weight: bold;
-
-}
-
-#controllerButton {
-    display: flex;
-    position: relative;
-    width: 100%;
-    height: 20px;
-    background(rgba(200,200,200,1.0));
-
-    justify-content: center;
-    align-items: center;
 }

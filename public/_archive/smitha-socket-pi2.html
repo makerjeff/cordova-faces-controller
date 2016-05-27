@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <title>smitha-socket</title>
+
+    <style>
+        body, html {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+<div id="status"> smitha-socket is working </div>
+
+<button id="button1"> click send</button> <br>
+<input id="sliderR" type="range" name="rangeInputR" value="0" min="-255" max="255" step="1"><br>
+<input id="sliderL" type="range" name="rangeInputL" value="0" min="-255" max="255" step="1"><br>
+
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function(e){
+
+        var Socket = io('192.168.1.110:3000');
+        var button1 = document.getElementById('button1');
+        var sliderR = document.getElementById('sliderR');
+        var sliderL = document.getElementById('sliderL');
+
+        var motor1Dir = 0;
+        var motor2Dir = 0;
+        //var sendValue1;
+        //var sendValue2;
+
+        //TODO: rewrite, even though this works.
+
+        Socket.on('connect', function(socket){
+            console.log('socket connection established!');
+
+
+            sliderL.addEventListener('input', function(e){
+                //socket.emit('message', motor1Dir + ',' + sendValue1 + ',' + motor2Dir + ',' + sendValue2 + ';');
+                updateMotor(Socket);
+            });
+
+            sliderR.addEventListener('input', function(e){
+                updateMotor(Socket);
+            });
+
+            button1.addEventListener('click', function(e){
+
+                sliderR.value = 0;
+                sliderL.value = 0;
+                console.log('ALL STOP!');
+                Socket.emit('message', '0,0,0,0;');
+            });
+        });
+
+
+
+
+        /**
+         * update motor position for both motors.
+         * @param socket Socket to pass in.
+         * @param dir1 motor1 direction.
+         * @param val1 motor1 value.
+         * @param dir2 motor2 direction.
+         * @param val2 motor2 value.
+         */
+        function updateMotor(socket){
+
+            var sendValue1 = sliderL.value;
+            var sendValue2 = sliderR.value;
+
+            if (sendValue1 < 0){
+                sendValue1 = Math.abs(sendValue1);
+                motor1Dir = '0';
+            } else {
+                motor1Dir = '1';
+            }
+
+            if (sendValue2 < 0){
+                sendValue2 = Math.abs(sendValue2);
+                motor2Dir = '0';
+            } else {
+                motor2Dir = '1';
+            }
+            socket.emit('message', motor1Dir + ',' + sendValue1 + ',' + motor2Dir + ',' + sendValue2 + ';');
+        }
+
+    });
+
+
+</script>
+</body>
+</html>

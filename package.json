@@ -13,8 +13,6 @@
     "express":"latest",
     "colors":"latest",
     "socket.io":"latest",
-    "serialport":"*",
-    "jade":"^1.11.0",
-    "espeak":"latest"
+    "serialport":"*"
   }
 }
