@@ -47,6 +47,10 @@ app.get('/derek/', function(req, res){
     res.sendFile(__dirname + '/public/touch_controller.html');
 });
 
+app.get('/wuyangnet', function(req, res){
+    res.sendFile(__dirname + '/public/touch_controller_local.html');
+});
+
 // SOCKET.IO
 io.on('connect', function(socket){
     console.log(socket.client.id.toString().blue + ' has connected' );
