@@ -191,10 +191,10 @@
             }
 
             // write to display
-            leftText.innerHTML = 'motor1 value: ' + Math.abs(motorValue1).toFixed(2) + '<br>'
-                    + 'motor1 direction: ' + motorDir1;
+            leftText.innerHTML = 'motor1 value: ' + Math.abs(motorValue2).toFixed(2) + '<br>'
+                    + 'motor1 direction: ' + motorDir2;
 
-            var motor1string = motorDir1 + ',' + Math.abs(motorValue1).toFixed(0) + ',' + motorDir2 + ',' + Math.abs(motorValue2).toFixed(0) + ';';
+            var motor1string = motorDir2 + ',' + Math.abs(motorValue2).toFixed(0) + ',' + motorDir1 + ',' + Math.abs(motorValue1).toFixed(0) + ';';
 
             //emit to socket
             Socket.emit('message', motor1string);
@@ -222,10 +222,10 @@
             }
 
             // write to display
-            rightText.innerHTML = 'motor2 value: ' + Math.abs(motorValue2).toFixed(2) + '<br>'
-                    + 'motor2 direction: ' + motorDir2;
+            rightText.innerHTML = 'motor2 value: ' + Math.abs(motorValue1).toFixed(2) + '<br>'
+                    + 'motor2 direction: ' + motorDir1;
 
-            var motor1string = motorDir1 + ',' + Math.abs(motorValue1).toFixed(0) + ',' + motorDir2 + ',' + Math.abs(motorValue2).toFixed(0) + ';';
+            var motor1string = motorDir2 + ',' + Math.abs(motorValue2).toFixed(0) + ',' + motorDir1 + ',' + Math.abs(motorValue1).toFixed(0) + ';';
 
             //emit to socket
             Socket.emit('message', motor1string);
