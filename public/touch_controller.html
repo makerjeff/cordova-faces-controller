@@ -177,7 +177,7 @@
             console.log('moving!');
             leftButton.style.background = 'rgba(190,190,255,1.0)';
 
-            motorValue1 = baseValue1 - e.targetTouches[0].pageY*multiplier;
+            motorValue1 = (baseValue1 - e.targetTouches[0].pageY) * multiplier;
 
             if (motorValue1 > 255) {
                 motorValue1 = 255;
@@ -208,7 +208,7 @@
             console.log('moving!');
             rightButton.style.background = 'rgba(190,190,255,1.0)';
 
-            motorValue2 = baseValue2 - e.targetTouches[0].pageY*multiplier;
+            motorValue2 = (baseValue2 - e.targetTouches[0].pageY) * multiplier;
 
             if (motorValue2 > 255) {
                 motorValue2 = 255;
