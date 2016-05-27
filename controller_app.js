@@ -57,7 +57,7 @@ app.use(express.static(__dirname + '/public'));
 // ===== EXPRESS ROUTES =====
 app.get('/controller/', function(req, res){
     res.type('text/html');
-    res.sendFile(__dirname + '/workshop/www/controller.html');
+    res.sendFile(__dirname + '/workshop/www/touch_controller.html');
 });
 
 app.get('*', function(req,res){

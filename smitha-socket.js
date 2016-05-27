@@ -33,13 +33,18 @@ app.get('/', function(req,res){
     res.sendFile(__dirname + '/public/smitha-socket.html');
 });
 
-//for pi2 controller
+//for pi2 controller. WuYangNet (localhost:3000)
 app.get('/pi2/', function(req, res){
     res.sendFile(__dirname + '/public/smitha-socket-pi2.html');
 });
 
+//for pi2 controller, WuYangNet (192.168.1.110:3000)
 app.get('/pifi/', function(req, res){
     res.sendFile(__dirname + '/public/smitha-socket-pi2-pifi.html');
+});
+
+app.get('/derek/', function(req, res){
+    res.sendFile(__dirname + '/public/touch_controller.html');
 });
 
 // SOCKET.IO

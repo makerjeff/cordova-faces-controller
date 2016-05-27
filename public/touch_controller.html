@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <!--
+        Customize this policy to fit your own app's needs. For more guidance, see:
+            https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
+        Some notes:
+            * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+            * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+            * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+                * Enable inline JS: add 'unsafe-inline' to default-src
+        -->
+        <!--<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">-->
+        <!--<meta name="format-detection" content="telephone=no">-->
+        <!--<meta name="msapplication-tap-highlight" content="no">-->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <!--<link rel="stylesheet" type="text/css" href="./css/controller.css">-->
+        <title>Derek! Controller</title>
+
+        <style>
+            * {
+                -webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */
+            }
+
+            html, body {
+                -webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
+                -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
+                -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
+                background-color:#E4E4E4;
+
+                background-attachment:fixed;
+                font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
+                font-size:12px;
+                height:100%;
+                margin:0px;
+                padding:0px;
+                text-transform:uppercase;
+                width:100%;
+            }
+
+            .controlPad {
+                display: flex;
+                position: relative;
+                width: 50%;
+                height: 100%;
+                background: rgba(255,190,190,1.0);
+                justify-content: center;
+                align-items: center;
+                font-weight: bold;
+
+                box-sizing: border-box;
+
+                margin: 0;
+                padding: 0;
+
+                border: 0px solid black;
+            }
+
+            .container {
+                display: flex;
+                width: 100%;
+                height: 100%;
+
+                margin: 0px;
+                padding: 0px;
+            }
+
+            #leftButton {
+            }
+
+            #rightButton {
+            }
+
+        </style>
+    </head>
+    <body>
+
+    <!--the buttons-->
+    <div class="container">
+        <div id="leftButton" class="controlPad"><p id="leftButtonText">Left</div>
+        <div id="rightButton" class="controlPad"><p id="rightButtonText">Right</div>
+    </div>
+
+
+    <!--auto hosted by socket.io-->
+        <script src="/socket.io/socket.io.js"></script>
+
+        <script>
+        //sock-its
+        //var Socket = io('192.168.42.1:3000');
+        //var Socket = io('192.168.1.135:3000');
+        var Socket = io('192.168.1.110:3000');
+
+        //built-in disconnect event
+        Socket.on('disconnect', function(){
+            //set disconnect alert
+            console.log('aborted socket mission!');
+        });
+
+        //built-in connect event
+        Socket.on('connect', function(socket){
+            console.log('socket mission is a go!');
+            Socket.emit('message', 'the robot is online.');
+        });
+
+        //custom message event, which won't happen on this implementation
+        //because we're just sending data to the server.
+        Socket.on('data', function(data){
+            console.log(data);
+        });
+
+        //******** DON'T USE IN PRODUCTION! POLLUTES GLOBAL SCOPE! *********
+        var leftButton = document.getElementById('leftButton');
+        var leftText = document.getElementById('leftButtonText');
+
+        var rightButton = document.getElementById('rightButton');
+        var rightText = document.getElementById('rightButtonText');
+
+        var baseValue1 = 0;
+        var baseValue2 = 0;
+
+        var motorDir1 = 1;
+        var motorValue1 = 0;
+
+        var motorDir2 = 1;
+        var motorValue2 = 0;
+
+        // ===== touch start ======
+        leftButton.addEventListener('touchstart', function(e){
+            e.preventDefault();
+            console.log('touch started');
+            leftButton.style.background = 'rgba(190,255,190,1.0)';
+            leftText.innerHTML = 'touching!';
+            //
+            baseValue1 = e.targetTouches[0].pageY;
+        });
+
+        rightButton.addEventListener('touchstart', function(e){
+            e.preventDefault();
+            rightButton.style.background = 'rgba(190,255,190,1.0)';
+            rightText.innerHTNL = 'touching!';
+
+            baseValue2 = e.targetTouches[0].pageY;
+        });
+
+        // ===== touch end ======
+        leftButton.addEventListener('touchend', function(e){
+            console.log('touch ended');
+            leftButton.style.background = 'rgba(255,190,190,1.0)';
+            leftText.innerHTML = 'touch ended!' + '<br>' + 'values reset to zero.';
+
+            motorValue1 = 0;
+            console.log('motorValue1 reset to: ' + motorValue1);
+            Socket.emit('message', '0,0,0,0;');
+
+        });
+
+        rightButton.addEventListener('touchend', function(e){
+            rightButton.style.background = 'rgba(255,190,190,1.0)';
+            rightText.innerHTML = 'touch2 ended!' + '<br>' + 'values reset to zero.';
+            motorValue2 = 0;
+            Socket.emit('message', '0,0,0,0;');
+        });
+
+        // ===== touch cancel =====
+//        leftButton.addEventListener('touchcancel', function(e){
+//            console.log('touch canceled?');
+//            leftButton.style.background = 'rgba(0,0,0,1.0)';
+//        });
+
+        // ===== touch move =====
+        leftButton.addEventListener('touchmove', function(e){
+
+            console.log('moving!');
+            leftButton.style.background = 'rgba(190,190,255,1.0)';
+
+            motorValue1 = baseValue1 - e.targetTouches[0].pageY;
+
+            if (motorValue1 > 255) {
+                motorValue1 = 255;
+            }
+            else if (motorValue1 < -255){
+                motorValue1 = -255;
+            }
+
+            if(motorValue1 >= 0) {
+                motorDir1 = 1;
+            } else {
+                motorDir1 = 0;
+            }
+
+            // write to display
+            leftText.innerHTML = 'motor1 value: ' + Math.abs(motorValue1).toFixed(2) + '<br>'
+                    + 'motor1 direction: ' + motorDir1;
+
+            var motor1string = motorDir1 + ',' + Math.abs(motorValue1).toFixed(0) + ',' + motorDir2 + ',' + Math.abs(motorValue2).toFixed(0) + ';';
+
+            //emit to socket
+            Socket.emit('message', motor1string);
+
+        });
+
+        rightButton.addEventListener('touchmove', function(e){
+
+            console.log('moving!');
+            rightButton.style.background = 'rgba(190,190,255,1.0)';
+
+            motorValue2 = baseValue2 - e.targetTouches[0].pageY;
+
+            if (motorValue2 > 255) {
+                motorValue2 = 255;
+            }
+            else if (motorValue2 < -255){
+                motorValue2 = -255;
+            }
+
+            if(motorValue2 >= 0) {
+                motorDir2 = 1;
+            } else {
+                motorDir2 = 0;
+            }
+
+            // write to display
+            rightText.innerHTML = 'motor2 value: ' + Math.abs(motorValue2).toFixed(2) + '<br>'
+                    + 'motor2 direction: ' + motorDir2;
+
+            var motor1string = motorDir1 + ',' + Math.abs(motorValue1).toFixed(0) + ',' + motorDir2 + ',' + Math.abs(motorValue2).toFixed(0) + ';';
+
+            //emit to socket
+            Socket.emit('message', motor1string);
+
+        });
+
+
+
+    </script>
+
+
+    </body>
+</html>
